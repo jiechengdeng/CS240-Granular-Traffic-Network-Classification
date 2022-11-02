@@ -5,7 +5,7 @@
 3. Tensorflow
 
 ## Dataset
-https://www.kaggle.com/datasets/jiecdeng/240iscx?select=netflix.csv
+https://www.kaggle.com/datasets/jiecdeng/240iscx
 
 ## Suggested Papers to Read
 1. [streamingTraffic.pdf](https://github.com/jiechengdeng/CS240-Granular-Traffic-Network-Classification/files/9892343/streamingTraffic.pdf)
