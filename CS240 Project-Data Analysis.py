@@ -165,15 +165,24 @@ frame.set_facecolor('0.90')
 plt.show()
 
 
-# In[12]:
+# ### Reserved IP address space
+# ![image.png](attachment:image.png)
+
+# In[109]:
 
 
 # Analayzing the network at social level - Popularity of hosts
 x_src_ip_port = X_five_tuples[:,:2]
 X_dst_ip_port = X_five_tuples[:,2:4]
-# remove all 0.0.0.0, 255.255.255.255 ip
+# remove all reserved ip
+reserved_ip = ['0.0.0.0','239.255.255.250','255.255.255.255','224.0.0.252','10.0.2.15','224.0.0.251']
 X_src_des_ip_remove = X_src_dst_IP[np.where((X_src_dst_IP[:,0] != '0.0.0.0') & (X_src_dst_IP[:,1] != '0.0.0.0') &
-                                           (X_src_dst_IP[:,0] != '255.255.255.255') & (X_src_dst_IP[:,1] != '255.255.255.255'))]
+                                           (X_src_dst_IP[:,0] != '255.255.255.255') & (X_src_dst_IP[:,1] != '255.255.255.255')&
+                                           (X_src_dst_IP[:,0] != '224.0.0.252') & (X_src_dst_IP[:,1] != '224.0.0.252')&
+                                           (X_src_dst_IP[:,0] != '239.255.255.250') & (X_src_dst_IP[:,1] != '239.255.255.250')&
+                                           (X_src_dst_IP[:,0] != '224.0.0.251') & (X_src_dst_IP[:,1] != '224.0.0.251')&
+                                           (X_src_dst_IP[:,0] != '10.0.2.15') & (X_src_dst_IP[:,1] != '10.0.2.15'))]
+#10.0.2.15                                 
 count, unique = np.unique(X_src_des_ip_remove,return_counts=True)
 unique = unique.reshape(unique.shape[0],1)
 count = count.reshape(count.shape[0],1)
@@ -182,7 +191,7 @@ X_src_des_ip_count = X_src_des_ip_count[X_src_des_ip_count[:,0].argsort()]
 print(X_src_des_ip_remove.shape)
 
 
-# In[77]:
+# In[110]:
 
 
 graph = {}
@@ -224,12 +233,12 @@ fig, ax = plt.subplots(figsize=(17,5))
 plt.bar(X_src_des_degree_count_10[:,4],X_src_des_degree_count_10[:,3],align='center')
 plt.xlabel('IP',fontsize=16)
 plt.ylabel('Total Degree',fontsize=16)
-
+plt.title('10 most popular IP',fontsize=16)
 plt.show()
 print(X_src_des_degree_count_10)
 
 
-# In[81]:
+# In[111]:
 
 
 print(X_src_des_occurrence_count_10)
@@ -238,11 +247,11 @@ fig, ax = plt.subplots(figsize=(17,5))
 plt.bar(X_src_des_occurrence_count_10[:,4],X_src_des_occurrence_count_10[:,0],align='center')
 plt.xlabel('IP',fontsize=16)
 plt.ylabel('Occurrence',fontsize=16)
-
+plt.title('10 most occurrence IP',fontsize=16)
 plt.show()
 
 
-# In[75]:
+# In[112]:
 
 
 # show category counts with 10 most popular IP
@@ -259,7 +268,7 @@ for ip in ips:
     
 
 
-# In[82]:
+# In[113]:
 
 
 # show category counts with 10 most occurrence IP
@@ -275,8 +284,12 @@ for ip in ips:
     print()
 
 
-# In[ ]:
+# In[92]:
 
 
-
+a = X_ip_label[np.where((X_ip_label[:,0] == '131.202.240.150') | (X_ip_label[:,1] == '131.202.240.150'))]
+a1 = a[:,:2]
+for ip in np.unique(a1):
+    if not ip.startswith('131.202'):
+        print(ip)
 
