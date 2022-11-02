@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[66]:
+# In[1]:
 
 
 import numpy as np
@@ -9,20 +9,20 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-# In[67]:
+# In[2]:
 
 
 rawData = pd.read_csv('Google_hangouts_removeBadPackets.csv')
 
 
-# In[68]:
+# In[83]:
 
 
-print(rawData)
+#print(rawData)
 print("(rows,columns):",rawData.shape)
 
 
-# In[69]:
+# In[16]:
 
 
 # Get np array by columns
@@ -39,8 +39,11 @@ X_five_tuples = np.array(rawData.loc[:,['Src IP','Src Port','Dst IP','Dst Port',
 X_src_dst_IP = np.array(rawData.loc[:,['Src IP','Dst IP']])
 #print(X_category_AppProtocol[np.where(X_category_AppProtocol[:,0] == 'Web')])
 
+#Scr IP, Dst IP, Category, App Protocol, Web Service
+X_ip_label = np.array(rawData.loc[:,['Src IP','Dst IP','Category','App_protocol','Web_service']])
 
-# In[43]:
+
+# In[5]:
 
 
 # plot App_protocol
@@ -53,7 +56,7 @@ ax.hist(X_AppProtocol,rwidth=0.5,bins=np.arange(-0.5,len(X_appProtocol_labels)),
 plt.show()
 
 
-# In[158]:
+# In[29]:
 
 
 # plot category
@@ -70,7 +73,7 @@ ax.hist(X_category,rwidth=0.5,bins=np.arange(-0.5,len(x_category_labels)),edgeco
 plt.show()
 
 
-# In[45]:
+# In[7]:
 
 
 # plot what app protocols the network traffic use
@@ -88,7 +91,7 @@ ax.set_title("Network Traffic",fontsize=15)
 plt.show()
 
 
-# In[46]:
+# In[8]:
 
 
 # plot what app protocols the web traffic use
@@ -105,7 +108,7 @@ ax.set_title("Web Traffic",fontsize=15)
 plt.show()
 
 
-# In[47]:
+# In[9]:
 
 
 # normalizing total length of forward and backward flows
@@ -122,7 +125,7 @@ X_network_length_flow_norm = np.concatenate((X_network_length_flow_norm_forward,
 X_network_length_flow_norm = np.concatenate((X_network_length_flow_norm,X_network_length_flow[:,2].reshape(m,1)),axis=1)
 
 
-# In[48]:
+# In[10]:
 
 
 # plot total length of forward and backward flow in network traffic
@@ -144,7 +147,7 @@ frame.set_facecolor('0.90')
 plt.show()
 
 
-# In[49]:
+# In[11]:
 
 
 # plot total length of forward and backward flow in web traffic
@@ -162,13 +165,13 @@ frame.set_facecolor('0.90')
 plt.show()
 
 
-# In[187]:
+# In[12]:
 
 
 # Analayzing the network at social level - Popularity of hosts
 x_src_ip_port = X_five_tuples[:,:2]
 X_dst_ip_port = X_five_tuples[:,2:4]
-# remove all 0.0.0.0 ip
+# remove all 0.0.0.0, 255.255.255.255 ip
 X_src_des_ip_remove = X_src_dst_IP[np.where((X_src_dst_IP[:,0] != '0.0.0.0') & (X_src_dst_IP[:,1] != '0.0.0.0') &
                                            (X_src_dst_IP[:,0] != '255.255.255.255') & (X_src_dst_IP[:,1] != '255.255.255.255'))]
 count, unique = np.unique(X_src_des_ip_remove,return_counts=True)
@@ -179,7 +182,7 @@ X_src_des_ip_count = X_src_des_ip_count[X_src_des_ip_count[:,0].argsort()]
 print(X_src_des_ip_remove.shape)
 
 
-# In[188]:
+# In[77]:
 
 
 graph = {}
@@ -208,6 +211,8 @@ for row in X_src_des_ip_count:
 X_src_des_degree_count = np.array(X_src_des_degree_count)
 # sort by total degree
 X_src_des_degree_count = X_src_des_degree_count[X_src_des_degree_count[:,3].argsort()]
+# sort by occurrence
+X_src_des_occurrence_count = X_src_des_degree_count[X_src_des_degree_count[:,0].argsort()]
 
 # dimension
 degree_count_m = X_src_des_degree_count.shape[0]
@@ -221,6 +226,53 @@ plt.xlabel('IP',fontsize=16)
 plt.ylabel('Total Degree',fontsize=16)
 
 plt.show()
+print(X_src_des_degree_count_10)
+
+
+# In[81]:
+
+
+print(X_src_des_occurrence_count_10)
+X_src_des_occurrence_count_10 = X_src_des_occurrence_count[degree_count_m-10:]
+fig, ax = plt.subplots(figsize=(17,5))
+plt.bar(X_src_des_occurrence_count_10[:,4],X_src_des_occurrence_count_10[:,0],align='center')
+plt.xlabel('IP',fontsize=16)
+plt.ylabel('Occurrence',fontsize=16)
+
+plt.show()
+
+
+# In[75]:
+
+
+# show category counts with 10 most popular IP
+ips = X_src_des_degree_count_10[:,4]
+for ip in ips:
+    a = X_ip_label[np.where((X_ip_label[:,0] == ip) | (X_ip_label[:,1] == ip))]
+    a_category,counts = np.unique(a[:,4],return_counts=True)
+    total = np.sum(counts)
+    longest_length = max(len(x) for x in a_category)
+    print("Category count with IP = {}".format(ip))
+    for i in range(len(counts)):
+        print("{}: {:{pad}} {}%".format(a_category[i],counts[i],round((counts[i] / total) * 100,2),pad=longest_length-len(a_category[i])+5))
+    print()
+    
+
+
+# In[82]:
+
+
+# show category counts with 10 most occurrence IP
+ips = X_src_des_occurrence_count_10[:,4]
+for ip in ips:
+    a = X_ip_label[np.where((X_ip_label[:,0] == ip) | (X_ip_label[:,1] == ip))]
+    a_category,counts = np.unique(a[:,4],return_counts=True)
+    total = np.sum(counts)
+    longest_length = max(len(x) for x in a_category)
+    print("Category count with IP = {}".format(ip))
+    for i in range(len(counts)):
+        print("{}: {:{pad}} {}%".format(a_category[i],counts[i],round((counts[i] / total) * 100,2),pad=longest_length-len(a_category[i])+5))
+    print()
 
 
 # In[ ]:
