@@ -60,4 +60,9 @@ This folder contains all incorrect problems for the specific language and model.
 
 #### To Run:
 Go to `src` folder and run `python main.py`
-The program will be stuck when it prints the model's generated code. You need to copy the code from the terminal to `/home/travis/builds/GPT_Explanation_Project-main/core_reason_verification/project_data/temp_code.txt` then type any key to continue to test the new generated code.
+
+The program will be stuck after it prints the model's generated code. You need to copy the code from the terminal to:
+
+`/home/travis/builds/GPT_Explanation_Project-main/core_reason_verification/project_data/temp_code.txt` 
+
+then type any key to continue to test the new generated code.
