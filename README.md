@@ -39,8 +39,9 @@ The `test.py` will run either `test_java` or `test_python` method, before you ru
 
 `/home/travis/builds/GPT_Explanation_Project-main/common_library/project_settings.py`
 
-set `language` to python or java - control which function to call in test.py
-set `model_name` to Gemini or GPT-4 - which model's generated codes to use
+set `language` to python or java. This will control which function to call in test.py
+
+set `model_name` to Gemini or GPT-4. This will select which model's generated codes to use
 
 ### 2. Core Reason Verification
 We manually find mistakes and their core reasons of incorrect codes based on the method we describe in the paper. Then we verify our concluded core reasons by modifying the input prompt and rerun the test cases to validate our findings.
