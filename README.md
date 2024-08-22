@@ -31,7 +31,7 @@ There are 3 major things in this task, and our implementations are in the folder
 After we generate the code of each problem for both GPT-4 and Gemini Pro, we bring their generated codes to this docker environment to test their correctness. The implementation of testing their code can be found in:
         `/home/travis/builds/GPT_Explanation_Project-main/function_testing/src/test.py`
 
-#### To Run
+- #### To Run
 Go to `src` folder and run `python test.py`
 
 The `test.py` will run either `test_java` or `test_python` method, before you run it, you need to change the global variables that are defined in:
