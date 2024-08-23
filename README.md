@@ -15,26 +15,26 @@ https://www.kaggle.com/datasets/jiecdeng/240iscx
 5. [Paper_29-Network_Traffic_Classification_using_Machine.pdf](https://github.com/jiechengdeng/CS240-Granular-Traffic-Network-Classification/files/9892347/Paper_29-Network_Traffic_Classification_using_Machine.pdf)
 6. [1080091.1080119.pdf](https://github.com/jiechengdeng/CS240-Granular-Traffic-Network-Classification/files/9915614/1080091.1080119.pdf)
 
-# Configuration
+## Configuration
 `common_library/project_settings.py` is the configuration file that you need to provide your own model's API key and set the specific language and model to use.
 
 set `language` to python or java.
 
 set `model_name` to Gemini or GPT-4.
 
-# Code Generation - HumanEval & CoderEval
+## Code Generation - HumanEval & CoderEval
 `generate_code_snippet` folder contains the code to generate the solution code of GPT-4 and Gemini for both datasets. 
 
 #### To Run:
 Go to `generate_code_snippet/src` folder and run `python generate_code_snippet.py`
 
-# Generated Code Testing on HumanEval Dataset
+## Generated Code Testing on HumanEval Dataset
 After generate the code of each problem in HumanEval for both GPT-4 and Gemini Pro, run the code in `function_testing` folder to evaluate each generated solution code.
 
 #### To Run:
 Go to `function_testing/src` folder and run `python main.py`
 
-# Experiments for CoderEval Dataset 
+## Experiments for CoderEval Dataset 
 We use this dataset to test GPT-4 and Gemini Pro on code generation task and find their mistakes and the corresponding reasons for making mistakes.
 
 The dataset can be found at: https://github.com/CoderEval/CoderEval
@@ -44,6 +44,7 @@ Since our experiments for CoderEval Dataset relies on the docker environment, do
 
 ## Approach
 There are 3 major things in this task, and our implementations are in the folder: `GPT_Explanation_Project-main`
+
 ### 1. Generated Function Testing
 After generate the code of each problem for both GPT-4 and Gemini Pro, we bring their generated codes to this docker environment to test their correctness. The implementation of testing their code can be found in:
 
@@ -83,3 +84,4 @@ The program will be stuck after it prints the model's generated code. You need t
 `/home/travis/builds/GPT_Explanation_Project-main/core_reason_verification/project_data/temp_code.txt` 
 
 then type any key to continue to test the new generated code.
+
